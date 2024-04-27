@@ -1,0 +1,11 @@
+langchain
+langchain_community
+llama-cpp-python
+qdrant-client
+InstructorEmbedding
+sentence-transformers
+tiktoken
+lark
+requests
+openai-whisper
+webvtt-py
