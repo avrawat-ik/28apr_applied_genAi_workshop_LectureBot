@@ -4,8 +4,8 @@
 __pycache__/*
 __pycache__/
 qdrant/*
-ClassVTTFiles/
-ClassVTTFiles/*
+#ClassVTTFiles/
+#ClassVTTFiles/*
 #ClassTranscriptions/
 #ClassTranscriptions/*
 models/*.gguf
