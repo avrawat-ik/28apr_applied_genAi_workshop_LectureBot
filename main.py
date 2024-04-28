@@ -50,8 +50,8 @@ def load_pkl_files_from_directory(directory_path):
 def pkl_to_document(pkl_file_path):
     with open(pkl_file_path, 'rb') as file:
         pkl_data = pickle.load(file)
-        print("printing langchain schema")
-        print(dir(langchain.schema.Document))
+        #print("printing langchain schema")
+        #print(dir(langchain.schema.Document))
         if isinstance(pkl_data, Document) or isinstance(pkl_data, langchain.schema.Document):
             return pkl_data
 
@@ -91,21 +91,22 @@ llm = LlamaCpp(
 documents = load_docs()
 # We want to turn pkl docs to List<Document>
 pickle_documents = load_pkl_files_from_directory('./ClassTranscriptions')
-# pickle_documents = load_docs(True)
 
 if len(pickle_documents) < len(documents):
     # Loop over documents and add metadata so we can search it later
     for index, doc in enumerate(documents):
+        print(index, doc.metadata["source"])
         if os.path.exists(doc.metadata["source"].replace(".txt", ".pkl")):
-            break
+            print("file exists, no need to create pkl file:",doc.metadata["source"].replace(".txt", ".pkl"))
         else:
+            print("file doesnt exists, creating pkl file:", doc.metadata["source"].replace(".txt", ".pkl"))
             print("Generating summaries and topics for document #",
                   (index+1), "out of ", len(documents))
             doc.page_content = doc.page_content.replace('\n', '')
             doc.metadata["summary"] = generate_summary(llm, doc.page_content)
-            doc.metadata["topics"] = generate_topics(
-                llm, doc.metadata["summary"])
-
+            print(doc.metadata["summary"])
+            doc.metadata["topics"] = generate_topics(llm, doc.metadata["summary"])
+            print(doc.metadata["topics"])
             with open(doc.metadata["source"].replace(".txt", ".pkl"), 'wb') as file:
                 pickle.dump(doc, file)
 
